@@ -1,0 +1,25 @@
+#Springboot入门
+###一、使用IDEA创建springboot工程
+	1.首先创建maven工程，在IDEA中选择所要创建项目所在的位置。
+	2.在pom.xml文件中添加springboot的maven依赖。
+	3.在主程序中的Java中创建一个包，在创建的包中创建一个类，作为主程序的类。
+	4.在类中定义主方法作为程序的入口，在主方法中添加SpringApplication.run(类名.class，args).
+	5.在主程序的类中添加注解@SpringbootApplication，该注解在使用时，表示扫描该类所在包的同级包及其子包中所有的注解。
+	6.创建controller层的包，在包中定义controller类的程序，在程序中定义可以访问的方法，完成第一个springboot程序。
+	7.将springboot程序打包成jar包。在使用IDEA进行打包程序时需要先导入maven的打包工具，打包工具如下：
+	    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+	8.repackage：创建一个自动可执行的jar或war文件。它可以替换常规的artifact，或者用一个单独的classifier附属在maven构建的生命周期中。
