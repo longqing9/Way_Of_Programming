@@ -1,7 +1,0 @@
-INDEX VERSION 1.4+F:\Program\Javaproject\astudentcms\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-1845774188.index
-1226863535.index
-1768868810.index
-2103720330.index
-164516576.index
-825156417.index
