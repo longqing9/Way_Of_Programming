@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.cjob.dao.TbCjobDao">
+    
+	<sql id="tbCjobColumns">
+		a.id AS "id",
+		a.companyid AS "companyid",
+		a.comname AS "comname",
+		a.comprofile AS "comprofile",
+		a.job AS "job",
+		a.department AS "department",
+		a.number AS "number",
+		a.emolument AS "emolument",
+		a.ptime AS "ptime",
+		a.place AS "place",
+		a.other AS "other",
+		a.experience AS "experience",
+		a.educational AS "educational",
+		a.undergo AS "undergo",
+		a.language AS "language",
+		a.specialty AS "specialty",
+		a.age AS "age",
+		a.fulltime AS "fulltime",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tbCjobJoins">
+	</sql>
+    
+	<select id="get" resultType="TbCjob">
+		SELECT 
+			<include refid="tbCjobColumns"/>
+		FROM tb_cjob a
+		<include refid="tbCjobJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TbCjob">
+		SELECT 
+			<include refid="tbCjobColumns"/>
+		FROM tb_cjob a
+		<include refid="tbCjobJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="companyid != null and companyid != ''">
+				AND a.companyid = #{companyid}
+			</if>
+			<if test="comname != null and comname != ''">
+				AND a.comname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{comname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{comname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{comname},'%')</if>
+			</if>
+			<if test="job != null and job != ''">
+				AND a.job LIKE 
+					<if test="dbName == 'oracle'">'%'||#{job}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{job}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{job},'%')</if>
+			</if>
+			<if test="place != null and place != ''">
+				AND a.place LIKE 
+					<if test="dbName == 'oracle'">'%'||#{place}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{place}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{place},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+		<!-- 自己写的 -->
+	<select id="findListT" resultType="TbCjob">
+		SELECT 
+			<include refid="tbCjobColumns"/>
+		FROM tb_collect t LEFT JOIN tb_cjob a
+		ON  t.cjobid = a.id
+		WHERE t.studentid = #{iid} AND t.del_flag = 0 and a.del_flag = 0
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TbCjob">
+		SELECT 
+			<include refid="tbCjobColumns"/>
+		FROM tb_cjob a
+		<include refid="tbCjobJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tb_cjob(
+			id,
+			companyid,
+			comname,
+			comprofile,
+			job,
+			department,
+			number,
+			emolument,
+			ptime,
+			place,
+			other,
+			experience,
+			educational,
+			undergo,
+			language,
+			specialty,
+			age,
+			fulltime,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{companyid},
+			#{comname},
+			#{comprofile},
+			#{job},
+			#{department},
+			#{number},
+			#{emolument},
+			#{ptime},
+			#{place},
+			#{other},
+			#{experience},
+			#{educational},
+			#{undergo},
+			#{language},
+			#{specialty},
+			#{age},
+			#{fulltime},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tb_cjob SET 	
+			companyid = #{companyid},
+			comname = #{comname},
+			comprofile = #{comprofile},
+			job = #{job},
+			department = #{department},
+			number = #{number},
+			emolument = #{emolument},
+			ptime = #{ptime},
+			place = #{place},
+			other = #{other},
+			experience = #{experience},
+			educational = #{educational},
+			undergo = #{undergo},
+			language = #{language},
+			specialty = #{specialty},
+			age = #{age},
+			fulltime = #{fulltime},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tb_cjob SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

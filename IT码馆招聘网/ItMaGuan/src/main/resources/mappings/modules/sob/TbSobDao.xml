@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sob.dao.TbSobDao">
+    
+	<sql id="tbSobColumns">
+		a.id AS "id",
+		a.studentid AS "studentid",
+		a.job AS "job",
+		a.emolument AS "emolument",
+		a.workaddress AS "workaddress",
+		a.worknow AS "worknow",
+		a.jobnature AS "jobnature",
+		a.appendixid AS "appendixid",
+		a.specialty AS "specialty",
+		a.cname AS "cname",
+		a.manage AS "manage",
+		a.specialtyago AS "specialtyago",
+		a.zw_class AS "zwClass",
+		a.salary AS "salary",
+		a.jobmiaoshu AS "jobmiaoshu",
+		a.worktime AS "worktime",
+		a.pro_name AS "proName",
+		a.pro_time AS "proTime",
+		a.pro_descripe AS "proDescripe",
+		a.pro_duty AS "proDuty",
+		a.pro_company AS "proCompany",
+		a.sch_name AS "schName",
+		a.sch_time AS "schTime",
+		a.sch_profe AS "schProfe",
+		a.istzhao AS "istzhao",
+		a.degree AS "degree",
+		a.px_time AS "pxTime",
+		a.px_jigou AS "pxJigou",
+		a.px_class AS "pxClass",
+		a.yy_yuzhong AS "yyYuzhong",
+		a.yy_ts AS "yyTs",
+		a.yy_dx AS "yyDx",
+		a.zs_name AS "zsName",
+		a.zs_time AS "zsTime",
+		a.selfassess AS "selfassess",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="tbSobJoins">
+	</sql>
+    
+	<select id="get" resultType="TbSob">
+		SELECT 
+			<include refid="tbSobColumns"/>
+		FROM tb_sob a
+		<include refid="tbSobJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TbSob">
+		SELECT 
+			<include refid="tbSobColumns"/>
+		FROM tb_sob a
+		<include refid="tbSobJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="studentid != null and studentid != ''">
+				AND a.studentid = #{studentid}
+			</if>
+			<if test="job != null and job != ''">
+				AND a.job = #{job}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TbSob">
+		SELECT 
+			<include refid="tbSobColumns"/>
+		FROM tb_sob a
+		<include refid="tbSobJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tb_sob(
+			id,
+			studentid,
+			job,
+			emolument,
+			workaddress,
+			worknow,
+			jobnature,
+			appendixid,
+			specialty,
+			cname,
+			manage,
+			specialtyago,
+			zw_class,
+			salary,
+			jobmiaoshu,
+			worktime,
+			pro_name,
+			pro_time,
+			pro_descripe,
+			pro_duty,
+			pro_company,
+			sch_name,
+			sch_time,
+			sch_profe,
+			istzhao,
+			degree,
+			px_time,
+			px_jigou,
+			px_class,
+			yy_yuzhong,
+			yy_ts,
+			yy_dx,
+			zs_name,
+			zs_time,
+			selfassess,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{studentid},
+			#{job},
+			#{emolument},
+			#{workaddress},
+			#{worknow},
+			#{jobnature},
+			#{appendixid},
+			#{specialty},
+			#{cname},
+			#{manage},
+			#{specialtyago},
+			#{zwClass},
+			#{salary},
+			#{jobmiaoshu},
+			#{worktime},
+			#{proName},
+			#{proTime},
+			#{proDescripe},
+			#{proDuty},
+			#{proCompany},
+			#{schName},
+			#{schTime},
+			#{schProfe},
+			#{istzhao},
+			#{degree},
+			#{pxTime},
+			#{pxJigou},
+			#{pxClass},
+			#{yyYuzhong},
+			#{yyTs},
+			#{yyDx},
+			#{zsName},
+			#{zsTime},
+			#{selfassess},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tb_sob SET 	
+			studentid = #{studentid},
+			job = #{job},
+			emolument = #{emolument},
+			workaddress = #{workaddress},
+			worknow = #{worknow},
+			jobnature = #{jobnature},
+			appendixid = #{appendixid},
+			specialty = #{specialty},
+			cname = #{cname},
+			manage = #{manage},
+			specialtyago = #{specialtyago},
+			zw_class = #{zwClass},
+			salary = #{salary},
+			jobmiaoshu = #{jobmiaoshu},
+			worktime = #{worktime},
+			pro_name = #{proName},
+			pro_time = #{proTime},
+			pro_descripe = #{proDescripe},
+			pro_duty = #{proDuty},
+			pro_company = #{proCompany},
+			sch_name = #{schName},
+			sch_time = #{schTime},
+			sch_profe = #{schProfe},
+			istzhao = #{istzhao},
+			degree = #{degree},
+			px_time = #{pxTime},
+			px_jigou = #{pxJigou},
+			px_class = #{pxClass},
+			yy_yuzhong = #{yyYuzhong},
+			yy_ts = #{yyTs},
+			yy_dx = #{yyDx},
+			zs_name = #{zsName},
+			zs_time = #{zsTime},
+			selfassess = #{selfassess},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tb_sob SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

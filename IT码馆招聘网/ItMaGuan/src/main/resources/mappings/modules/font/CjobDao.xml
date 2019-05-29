@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.frontWeb.dao.CjobDao">
+    
+    <!--a.password AS "password",  -->
+	<sql id="tbCompanyColumns">
+		a.id AS "id",
+		a.companyid AS "companyid",
+		t.other AS "zht",
+		a.comname AS "comname",
+		a.comprofile AS "comprofile",
+		a.job AS "job",
+		a.department AS "department",
+		a.number AS "number",
+		a.emolument AS "emolument",
+		a.ptime AS "ptime",
+		a.place AS "place",
+		a.other AS "other",
+		a.experience AS "experience",
+		a.educational AS "educational",
+		a.undergo AS "undergo",
+		a.language AS "language",
+		a.specialty AS "specialty",
+		a.age AS "age",
+		a.fulltime AS "fulltime",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	 
+	<!--  <sql id="tbCompanyColumns">
+		a.id AS "id",
+		a.companyid AS "companyid",
+		a.comname AS "comname",
+		a.comprofile AS "comprofile",
+		a.job AS "job",
+		a.department AS "department",
+		a.number AS "number",
+		a.emolument AS "emolument",
+		a.ptime AS "ptime",
+		a.place AS "place",
+		a.other AS "other",
+		a.experience AS "experience",
+		a.educational AS "educational",
+		a.undergo AS "undergo",
+		a.language AS "language",
+		a.specialty AS "specialty",
+		a.age AS "age",
+		a.fulltime AS "fulltime",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql> -->
+	<!-- <sql id="tbCompanyJoins">
+	</sql>
+    
+	<select id="findList" resultType="Cjob">
+		SELECT 
+		<include refid="tbCompanyColumns"/>
+		FROM tb_cjob a 
+		<where>
+			a.del_flag = 0
+		</where>
+		AND a.id in (
+			SELECT t.jobid
+			FROM tb_sobz t
+			WHERE t.del_flag = 0
+			AND t.studentid = #{iid}
+		)
+	</select> -->
+	
+	 <sql id="tbCompanyJoins">
+	</sql>
+    
+	<select id="findList" resultType="Cjob">
+		SELECT 
+		<include refid="tbCompanyColumns"/>
+		FROM tb_cjob a,tb_sobz t
+		<where>
+			a.del_flag = 0
+		</where>
+		AND a.id= t.jobid AND t.del_flag = 0  AND t.studentid = #{iid}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+</mapper>
