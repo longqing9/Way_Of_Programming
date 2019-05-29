@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.abxiu.dao.AbxiuDao">
+    
+	<sql id="abxiuColumns">
+		a.id AS "id",
+		a.applyid AS "applyid",
+		a.acceptid AS "acceptid",
+		a.content AS "content",
+		a.time AS "time",
+		a.numb AS "numb",
+		a.ishow AS "ishow",
+		a.score AS "score",
+		a.isok AS "isok",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="abxiuJoins">
+	</sql>
+    
+	<select id="get" resultType="Abxiu">
+		SELECT 
+			<include refid="abxiuColumns"/>
+		FROM abxiu a
+		<include refid="abxiuJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Abxiu">
+		SELECT 
+			<include refid="abxiuColumns"/>
+		FROM abxiu a
+		<include refid="abxiuJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="applyid != null and applyid != ''">
+				AND a.applyid = #{applyid}
+			</if>
+			<if test="acceptid != null and acceptid != ''">
+				AND a.acceptid = #{acceptid}
+			</if>
+			<if test="numb != null and numb != ''">
+				AND a.numb = #{numb}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Abxiu">
+		SELECT 
+			<include refid="abxiuColumns"/>
+		FROM abxiu a
+		<include refid="abxiuJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO abxiu(
+			id,
+			applyid,
+			acceptid,
+			content,
+			time,
+			numb,
+			ishow,
+			score,
+			isok,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{applyid},
+			#{acceptid},
+			#{content},
+			#{time},
+			#{numb},
+			#{ishow},
+			#{score},
+			#{isok},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE abxiu SET 	
+			applyid = #{applyid},
+			acceptid = #{acceptid},
+			content = #{content},
+			time = #{time},
+			numb = #{numb},
+			ishow = #{ishow},
+			score = #{score},
+			isok = #{isok},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE abxiu SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

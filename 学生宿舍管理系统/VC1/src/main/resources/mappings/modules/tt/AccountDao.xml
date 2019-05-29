@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.tt.dao.AccountDao">
+    
+	<sql id="accountColumns">
+		a.id AS "id",
+		a.account AS "account",
+		a.password AS "password",
+		a.guan AS "guan",
+		a.name AS "name",
+		a.sex AS "sex",
+		a.durmnumber AS "durmnumber",
+		a.bednumber AS "bednumber",
+		a.age AS "age",
+		a.birthday AS "birthday",
+		a.constellation AS "constellation",
+		a.hometown AS "hometown",
+		a.signature AS "signature",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="accountJoins">
+	</sql>
+    
+	<select id="get" resultType="Account">
+		SELECT 
+			<include refid="accountColumns"/>
+		FROM account a
+		<include refid="accountJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Account">
+		SELECT 
+			<include refid="accountColumns"/>
+		FROM account a
+		<include refid="accountJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="account != null and account != ''">
+				AND a.account LIKE 
+					<if test="dbName == 'oracle'">'%'||#{account}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{account}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{account},'%')</if>
+			</if>
+			<if test="guan != null and guan != ''">
+				AND a.guan = #{guan}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="durmnumber != null and durmnumber != ''">
+				AND a.durmnumber = #{durmnumber}
+			</if>
+			<if test="hometown != null and hometown != ''">
+				AND a.hometown = #{hometown}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Account">
+		SELECT 
+			<include refid="accountColumns"/>
+		FROM account a
+		<include refid="accountJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO account(
+			id,
+			account,
+			password,
+			guan,
+			name,
+			sex,
+			durmnumber,
+			bednumber,
+			age,
+			birthday,
+			constellation,
+			hometown,
+			signature,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{account},
+			#{password},
+			#{guan},
+			#{name},
+			#{sex},
+			#{durmnumber},
+			#{bednumber},
+			#{age},
+			#{birthday},
+			#{constellation},
+			#{hometown},
+			#{signature},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE account SET 	
+			account = #{account},
+			password = #{password},
+			guan = #{guan},
+			name = #{name},
+			sex = #{sex},
+			durmnumber = #{durmnumber},
+			bednumber = #{bednumber},
+			age = #{age},
+			birthday = #{birthday},
+			constellation = #{constellation},
+			hometown = #{hometown},
+			signature = #{signature},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE account SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
